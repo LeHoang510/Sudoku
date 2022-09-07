@@ -2,7 +2,7 @@
 
 - en tant que joueur je veux choisir mon nom pour me reconnaitre
 
-- en tant que joueur je veux pouvoir générer des sudokus pour toujours en avoir
+- en tant que joueur je veux pouvoir générer des sudokus pour toujours en avoir (ou choisir un sudoku déjà généré pour essayer d'avoir une meilleur score que les autres qui y ont joués)
 
 - en tant que joueur je veux pouvoir rentrer des chiffres avec le souris ou le clavier pour être plus confortable
 
