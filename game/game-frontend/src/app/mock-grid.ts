@@ -1,4 +1,4 @@
-import {GridElement} from "./gridElement";
+import {GridElement} from "./model/gridElement";
 
 export const MOCKGRID: GridElement[][]= [
   [{value: 5,suggestion:[]},{value: 3,suggestion:[]},{value: 0,suggestion:[]},{value: 7,suggestion:[]},{value: 0,suggestion:[]},{value: 0,suggestion:[]},{value: 0,suggestion:[]},{value: 0,suggestion:[]},{value: 0,suggestion:[]},{value: 0,suggestion:[]}],

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {GridElement} from "./gridElement";
-import {MOCKGRID} from "./mock-grid";
+import {GridElement} from "../model/gridElement";
+import {MOCKGRID} from "../mock-grid";
 
 @Injectable({
   providedIn: 'root'
