@@ -16,11 +16,13 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
 import {RouterModule} from "@angular/router";
 import {InteractoModule, interactoTreeUndoProviders} from "interacto-angular";
 import { GridComponent } from './grid/grid.component';
+import { MainMenuComponentComponent } from './main-menu-component/main-menu-component.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GridComponent
+    GridComponent,
+    MainMenuComponentComponent
   ],
     imports: [
         BrowserModule,

@@ -1,0 +1,13 @@
+<p>enter player name :</p>
+
+<input #name_entry_box (keyup)="nameInput(name_entry_box.value)">
+
+<p>
+    <input type="checkbox" [(ngModel)]="with_suggestions" [ngModelOptions]="{standalone: true}"/> 
+    select with suggestions or not (prevents recording score)
+</p>
+
+<p>selecta grid to play or replay [TODO]</p>
+<p>generate a board with  difficulty [TODO]</p>
+<p>[board image goes here] [TODO]</p>
+<p>click on the board to start [TODO]</p>
