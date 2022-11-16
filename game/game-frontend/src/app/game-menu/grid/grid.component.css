@@ -1,0 +1,66 @@
+
+table, th, td {
+  border: 2px solid black;
+  border-collapse: collapse;
+}
+table{
+  margin-left: auto;
+  margin-right: auto;
+  width: 800px;
+  height: 800px;
+}
+tr{
+  height: 10%;
+}
+th{
+  width: 10%;
+}
+
+/* Turn off arrow */
+/deep/ .mat-select-arrow {
+  display: none;
+}
+/* box */
+mat-option{
+  height: 100%;
+}
+
+.able{
+  height: 100%;
+  position:relative;
+}
+.able:hover{
+  background: lavender;
+}
+
+
+.suggestion{
+  position: absolute;
+  left: 0;
+  font-size: 18px;
+}
+.tile-select{
+  position: absolute;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  font-size: 25px;
+  height: 100%;
+}
+.tile-error {
+  background: lightcoral;
+}
+.mat-select /deep/ .mat-select-trigger{
+  height: 100%;
+}
+.disable{
+  background: gray;
+}
+.mat-option.mat-option-disabled{
+  color:black;
+  font-size: 25px;
+  text-align: center;
+  height: 100%;
+}
+
+

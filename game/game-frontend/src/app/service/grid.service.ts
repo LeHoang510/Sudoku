@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {GridElement} from "../model/gridElement";
-import {MOCKGRID} from "../mock-grid";
+import {MOCKGRID} from "../mock/mock-grid";
+import {Grid} from "../model/grid";
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +9,7 @@ export class GridService {
 
   constructor() { }
 
-  getGrid(): GridElement[][]{
+  getGrid(): Grid{
     return MOCKGRID;
   }
 }

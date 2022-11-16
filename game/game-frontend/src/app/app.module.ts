@@ -15,30 +15,38 @@ import {FormsModule} from "@angular/forms";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {RouterModule} from "@angular/router";
 import {InteractoModule, interactoTreeUndoProviders} from "interacto-angular";
-import { GridComponent } from './grid/grid.component';
+import { GridComponent } from './game-menu/grid/grid.component';
+import {GameMenuComponent} from './game-menu/game-menu.component';
+import {MatDialogModule} from "@angular/material/dialog";
+import { LeaderboardComponent } from './game-menu/leaderboard/leaderboard.component';
+import { EndGameComponent } from './game-menu/end-game/end-game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    GridComponent
+    GridComponent,
+    GameMenuComponent,
+    LeaderboardComponent,
+    EndGameComponent
   ],
-    imports: [
-        BrowserModule,
-        AppRoutingModule,
-        HttpClientModule,
-        InteractoModule,
-        MatSelectModule,
-        MatInputModule,
-        MatFormFieldModule,
-        MatButtonModule,
-        MatIconModule,
-        BrowserAnimationsModule,
-        MatIconModule,
-        MatListModule,
-        FormsModule,
-        MatCheckboxModule,
-        RouterModule
-    ],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    HttpClientModule,
+    InteractoModule,
+    MatSelectModule,
+    MatInputModule,
+    MatFormFieldModule,
+    MatButtonModule,
+    MatIconModule,
+    BrowserAnimationsModule,
+    MatIconModule,
+    MatListModule,
+    FormsModule,
+    MatCheckboxModule,
+    RouterModule,
+    MatDialogModule
+  ],
   providers: [interactoTreeUndoProviders(true)],
   bootstrap: [AppComponent]
 })
