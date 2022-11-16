@@ -22,9 +22,9 @@ export class GridComponent implements OnInit {
     console.log(event);
     if (event.key === "1") {
       const element = document.querySelectorAll( "mat-select:hover")[0];
+      console.log( element);
+      console.log((element as HTMLSelectElement).value);
 
-      console.log(element);
-      console.log(typeof element);
     }
   }
   ngOnInit(): void {
@@ -32,7 +32,7 @@ export class GridComponent implements OnInit {
   }
 
   addCoups():void{
-    this.gameService.selectValue();
+    this.gameService.addCoups();
   }
 
   setTileValueKeyboard(event:Event){

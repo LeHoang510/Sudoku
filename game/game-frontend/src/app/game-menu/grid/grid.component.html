@@ -6,7 +6,7 @@
         <ng-template #change>
           <div class="able">
             <mat-label *ngIf="suggestion_mode" class="suggestion">{{grid.suggestion[x][y]}}</mat-label>
-            <mat-select class="tile-select" [ngClass]="(x+y)%9==0 ? 'tile-error' : ''" (valueChange)="addCoups()" (keypress)="setTileValueKeyboard($event)">
+            <mat-select class="tile-select" [ngClass]="(x+y)%9==0 ? 'tile-error' : ''" (valueChange)="addCoups()">
               <mat-option style="font-size: 15px">-</mat-option>
               <mat-option style="font-size: 15px" *ngFor="let z of [1,2,3,4,5,6,7,8,9]" [value]="z">{{z}}</mat-option>
             </mat-select>

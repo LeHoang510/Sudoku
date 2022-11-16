@@ -1,0 +1,22 @@
+[
+  {
+    "rank": 1,
+    "name": "Yolo1",
+    "score": 25
+  },
+  {
+    "rank": 2,
+    "name": "Yolo2",
+    "score": 50
+  },
+  {
+    "rank": 3,
+    "name": "Yolo3",
+    "score": 75
+  },
+  {
+    "rank": 4,
+    "name": "Yolo4",
+    "score": 100
+  }
+]
