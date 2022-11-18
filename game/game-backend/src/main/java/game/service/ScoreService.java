@@ -20,8 +20,8 @@ public class ScoreService {
         this.scoreRepository = scoreRepository;
 
     }
-    public Iterable<Score> getLeaderboard(){
-        return scoreRepository.findAll();
+    public List<Score> getLeaderboard(){
+        return (List<Score>) scoreRepository.findAll();
     }
     public void saveLeaderboard(List<Score> scores){
         scoreRepository.saveAll(scores);

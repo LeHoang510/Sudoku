@@ -12,7 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 
 @RestController
-@RequestMapping("/leaderboard")
+@RequestMapping("api/leaderboard")
 public class ScoreController {
     private final ScoreService scoreService;
 
@@ -21,7 +21,7 @@ public class ScoreController {
     }
 
     @GetMapping(path = "list", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Iterable<Score> getScoreBoard() {
+    public List<Score> getScoreBoard() {
         return scoreService.getLeaderboard();
     }
 }

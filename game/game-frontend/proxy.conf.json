@@ -6,7 +6,7 @@
     "changeOrigin": true
   },
   "/sudoku-provider/*": {
-    "target": "http://localhost:3001",
+    "target": "https://sudoku.diverse-team.fr",
     "secure": false,
     "logLevel": "debug",
     "changeOrigin": true

@@ -16,18 +16,22 @@ export interface EndGameData {
   styleUrls: ['./game-menu.component.css']
 })
 export class GameMenuComponent implements OnInit {
-  coups: number | undefined;
-  player_name: String | undefined;
+  coups: number ;
+  player_name: String;
+
   constructor(private gameService: GameService, public dialog: MatDialog) {
-    this.gameService.getCoups().subscribe(coups=>{
-      this.coups=coups;
-    })
-    this.gameService.getPlayerName().subscribe(name=>{
-      this.player_name=name;
-    })
+    this.coups=0;
+    this.player_name="";
   }
 
   ngOnInit(): void {
+    this.gameService.getCoups().subscribe(coups=>{
+      this.coups=coups;
+    });
+    this.gameService.getPlayerName().subscribe(name=>{
+      this.player_name=name;
+    });
+    this.gameService.endGameEvent.subscribe(response => this.openEndgame());
   }
 
   setPlayerName(event: Event): void{
