@@ -9,10 +9,10 @@ import { GridService } from '../service/grid.service';
 })
 export class MainMenuComponentComponent implements OnInit {
 
-  gridElement:Grid;
+  grid:Grid;
 
   constructor(private gridService:GridService) {
-    this.gridElement=this.gridService.getGrid();
+    this.grid=this.gridService.getGrid();
    }
 
   ngOnInit(): void {}
