@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GridElement } from '../model/gridElement';
+import { Grid } from '../model/grid';
 import { GridService } from '../service/grid.service';
 
 @Component({
@@ -9,16 +9,13 @@ import { GridService } from '../service/grid.service';
 })
 export class MainMenuComponentComponent implements OnInit {
 
-  gridElement:GridElement[][]=[];
+  gridElement:Grid;
 
-  constructor(private gridService:GridService) { }
-
-  ngOnInit(): void {
-    this.getGrid();
-  }
-  getGrid():void{
+  constructor(private gridService:GridService) {
     this.gridElement=this.gridService.getGrid();
-  }
+   }
+
+  ngOnInit(): void {}
   
   // user's desired name
   user_name : string = ""
