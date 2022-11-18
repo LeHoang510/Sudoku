@@ -1,0 +1,21 @@
+<ng-container>
+  <table>
+    <tr *ngFor="let x of [0,1,2,3,4,5,6,7,8]" >
+      <th *ngFor="let y of [0,1,2,3,4,5,6,7,8]" >
+        <div *ngIf="grid.gridElement[x][y]==0 then change else constant"></div>
+        <ng-template #change>
+          <div class="able">
+            <mat-label *ngIf="suggestion_mode" class="suggestion">{{grid.suggestion[x][y]}}</mat-label>
+            <mat-select class="tile-select" [ngClass]="(x+y)%9==0 ? 'tile-error' : ''" (valueChange)="addCoups()" (keypress)="setTileValueKeyboard($event)">
+              <mat-option style="font-size: 15px">-</mat-option>
+              <mat-option style="font-size: 15px" *ngFor="let z of [1,2,3,4,5,6,7,8,9]" [value]="z">{{z}}</mat-option>
+            </mat-select>
+          </div>
+        </ng-template>
+        <ng-template #constant>
+            <mat-option [ngClass]="false ? 'tile-error' : 'disable'" disabled>{{grid.gridElement[x][y]}}</mat-option>
+        </ng-template>
+      </th>
+    </tr>
+  </table>
+</ng-container>
