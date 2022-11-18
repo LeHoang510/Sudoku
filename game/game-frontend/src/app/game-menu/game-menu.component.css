@@ -1,0 +1,59 @@
+img {
+  display: inline;
+  margin: 0 auto;
+  height: 100%;
+  width: auto;
+}
+/* History section */
+.history-section{
+  background-color: #000;
+  min-height: 75px;
+  border-bottom-style: solid;
+}
+.history-section h2{
+  font-size: 25px;
+  text-align: center;
+  padding-top: 25px;
+  padding-bottom: 25px;
+  margin: 0;
+  color: #fff;
+}
+.button{
+  width: 50%;
+  border-right-style: solid;
+  border-left-style: solid;
+  color: #000;
+  background-color: #d3d3d3;
+  border-width: thin;
+  font-size: 20px;
+}
+
+/* Sidebar */
+#side-info{
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+/* leaderboard icon */
+.leaderboard {
+  width: 100px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 50%;
+  border:none;
+}
+.leaderboard:hover{
+  background: gray;
+}
+/* input form */
+input:disabled {
+  color: black;
+}
+mat-form-field.mat-form-field {
+  font-size: 25px;
+}
+
+
+
+

@@ -1,7 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+@import "~bootstrap/dist/css/bootstrap.css";
 
+@font-face {
+  font-family: Bodo;
+  src: url("assets/BodoAmat.ttf");
+}
+
+* {
+  font-family: Bodo;
+}
 /* .tile-select-html .mat-select-arrow-wrapper {
   visibility: collapse;
 }
