@@ -15,7 +15,7 @@ import java.util.List;
 @Configuration
 public class MyCommandLineRunner implements CommandLineRunner {
 
-    private final String LEADERBOARD_JSON = "/data/leaderboard.json";
+    private static final String LEADERBOARD_JSON = "/data/leaderboard.json";
 
     @Autowired
     private ScoreService scoreService;
