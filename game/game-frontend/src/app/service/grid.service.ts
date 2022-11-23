@@ -78,6 +78,7 @@ export class GridService {
 
   // Set functions
   setTile(x:number,y:number,value:number){
+    this.gameService.addCoups();
     if(value==undefined){
       this.grid.gridElement[x][y]=0;
     }else {
