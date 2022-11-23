@@ -1,8 +1,8 @@
 package game.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import game.model.Score;
 
-public interface ScoreRepository extends CrudRepository<Score, Long> {
+public interface ScoreRepository extends JpaRepository<Score, Long> {
 }

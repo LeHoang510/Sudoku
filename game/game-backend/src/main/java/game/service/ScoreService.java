@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Getter
@@ -21,7 +19,7 @@ public class ScoreService {
 
     }
     public List<Score> getLeaderboard(){
-        return (List<Score>) scoreRepository.findAll();
+        return scoreRepository.findAll();
     }
     public void saveLeaderboard(List<Score> scores){
         scoreRepository.saveAll(scores);
