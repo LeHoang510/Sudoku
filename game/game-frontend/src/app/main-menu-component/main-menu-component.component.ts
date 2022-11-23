@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Grid } from '../model/grid';
 import { GridService } from '../service/grid.service';
 
@@ -11,7 +12,7 @@ export class MainMenuComponentComponent implements OnInit {
 
   grid:Grid;
 
-  constructor(private gridService:GridService) {
+  constructor(private router: Router, private gridService:GridService) {
     this.grid=this.gridService.getGrid();
    }
 
@@ -36,5 +37,6 @@ export class MainMenuComponentComponent implements OnInit {
     console.log("user_name : " + this.user_name);
     console.log("with_suggestions : " + this.with_suggestions);
     console.log("selectedDifficulty : " + this.selectedDifficulty);
+    this.router.navigate(["/game"]);
   }
 }
