@@ -18,7 +18,7 @@ public class ScoreService {
         this.scoreRepository = scoreRepository;
 
     }
-    public List<Score> getLeaderboard(){
+    public List<Score> getLeaderboard() {
         return scoreRepository.findAll();
     }
     public void saveLeaderboard(final List<Score> scores) {
