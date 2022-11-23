@@ -21,15 +21,15 @@ public class MyCommandLineRunner implements CommandLineRunner {
     private ScoreService scoreService;
 
     @Override
-    public void run(String[] args) throws Exception {
-        ObjectMapper mapper = new ObjectMapper();
-        TypeReference<List<Score>> typeReference = new TypeReference<List<Score>>(){};
-        InputStream inputStream = TypeReference.class.getResourceAsStream("/data/leaderboard.json");
+    public void run(final String[] args) throws Exception {
+        final ObjectMapper mapper = new ObjectMapper();
+        final TypeReference<List<Score>> typeReference = new TypeReference<List<Score>>() { };
+        final InputStream inputStream = TypeReference.class.getResourceAsStream(LEADERBOARD_JSON);
         try {
-            List<Score> scores = mapper.readValue(inputStream,typeReference);
+            final List<Score> scores = mapper.readValue(inputStream, typeReference);
             scoreService.saveLeaderboard(scores);
             System.out.println("Leaderboard Saved!");
-        } catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Unable to save scores: " + e.getMessage());
         }
     }
