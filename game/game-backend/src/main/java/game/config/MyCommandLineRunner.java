@@ -24,8 +24,7 @@ public class MyCommandLineRunner implements CommandLineRunner {
     public void run(final String[] args) throws Exception {
         final ObjectMapper mapper = new ObjectMapper();
         final TypeReference<List<Score>> typeReference = new TypeReference<List<Score>>() { };
-        final InputStream inputStream = TypeReference.class.getResourceAsStream(LEADERBOARD_JSON);
-        try {
+        try (final InputStream inputStream = TypeReference.class.getResourceAsStream(LEADERBOARD_JSON)) {
             final List<Score> scores = mapper.readValue(inputStream, typeReference);
             scoreService.saveLeaderboard(scores);
             System.out.println("Leaderboard Saved!");
