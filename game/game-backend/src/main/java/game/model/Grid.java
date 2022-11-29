@@ -19,9 +19,9 @@ public class Grid {
     private Score[] scores;
 
     public void addScore(final Score score) {
-        int length = this.scores.length;
+        final int length = this.scores.length;
         if (length < 5) {
-            Score[] scores = new Score[length + 1];
+            final Score[] scores = new Score[length + 1];
             scores[length] = score;
             this.scores = scores;
             System.out.println("=>success");

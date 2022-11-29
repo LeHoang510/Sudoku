@@ -22,25 +22,25 @@ public class GameService {
     private ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 
     public File getLevelFile(final String level) {
-        String source = "src/main/resources/data/grid/" + level + ".json";
+        final String source = "src/main/resources/data/grid/" + level + ".json";
         return Paths.get(source).toFile();
     }
 
     public List<Grid> getGrids() {
-        List<Grid> grids = new ArrayList<>();
+        final List<Grid> grids = new ArrayList<>();
         try {
             System.out.println("-get easy");
-            Grid easy = mapper.readValue(getLevelFile("easy"), Grid.class);
+            final Grid easy = mapper.readValue(getLevelFile("easy"), Grid.class);
             System.out.println("-get medium");
-            Grid medium = mapper.readValue(getLevelFile("medium"), Grid.class);
+            final Grid medium = mapper.readValue(getLevelFile("medium"), Grid.class);
             System.out.println("-get hard");
-            Grid hard = mapper.readValue(getLevelFile("hard"), Grid.class);
+            final Grid hard = mapper.readValue(getLevelFile("hard"), Grid.class);
             System.out.println("-get veryhard");
-            Grid veryhard = mapper.readValue(getLevelFile("veryhard"), Grid.class);
+            final Grid veryhard = mapper.readValue(getLevelFile("veryhard"), Grid.class);
             System.out.println("-get insane");
-            Grid insane = mapper.readValue(getLevelFile("insane"), Grid.class);
+            final Grid insane = mapper.readValue(getLevelFile("insane"), Grid.class);
             System.out.println("-get inhuman");
-            Grid inhuman = mapper.readValue(getLevelFile("inhuman"), Grid.class);
+            final Grid inhuman = mapper.readValue(getLevelFile("inhuman"), Grid.class);
             System.out.println("=>add to a list");
             grids.add(easy);
             grids.add(medium);

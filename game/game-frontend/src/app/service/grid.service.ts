@@ -150,6 +150,7 @@ export class GridService {
     }
   }
   squares_remove(grid:Grid){
+    // TODO
     for (let row = 0 ; row < 9; row = row + 3) {
       for (let col = 0; col < 9; col = col + 3) {
         for(let r = row; r < row+3; r++) {
@@ -166,9 +167,6 @@ export class GridService {
         }
       }
     }
-  }
-  notEquals(element:number, val:number){
-    return element!=val;
   }
 
 }
