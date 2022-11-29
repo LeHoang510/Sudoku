@@ -15,7 +15,7 @@ export class GridComponent implements OnInit {
   suggestions: number[][][];
 
   constructor(private gameService:GameService, private gridService: GridService) {
-    this.grid={gridElements:[],constant:[]};
+    this.grid={gridElements:[],constant:[],scores:[]};
     this.errors=[];
     this.suggestions=[];
     this.suggestion_mode=false;
@@ -45,11 +45,11 @@ export class GridComponent implements OnInit {
   }
   setTileValueRightClick(event:Event,x:number,y:number){
     event.preventDefault();
-    this.selectTileValue(x,y,this.suggestions[x][y][0]);
+    if(this.gameService.with_suggestion){
+      this.selectTileValue(x,y,this.suggestions[x][y][0]);
+    }
   }
-
-
-  setTileValueKeyboard(event:Event){
+  setTileValueKeyboard(event:Event,x:number,y:number){
     console.log(event);
   }
 

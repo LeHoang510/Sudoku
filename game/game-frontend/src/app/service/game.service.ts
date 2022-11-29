@@ -1,14 +1,16 @@
 import {EventEmitter, Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, lastValueFrom, Observable} from "rxjs";
 import {Grid} from "../model/grid";
-import {ApiService} from "./api.service";
 import {GridService} from "./grid.service";
+import {HttpClient} from "@angular/common/http";
 import {Score} from "../model/score";
+import {Level} from "../model/level";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameService {
+  level:String;
   player_name:String;
   coups:number;
   with_suggestion: boolean;
@@ -21,38 +23,50 @@ export class GameService {
 
   endGameEvent:EventEmitter<boolean>;
 
-  constructor(private apiService: ApiService, private gridService:GridService) {
+  constructor(private http: HttpClient, private gridService:GridService) {
+    this.level="";
     this.coups=0;
     this.player_name="Foo";
     this.with_suggestion=false;
+
     this.grid={gridElements:Array.from({length: 9}, () => Array.from({length: 9})),
-      constant:Array.from({length: 9}, () => Array.from({length: 9}))};
+      constant:Array.from({length: 9}, () => Array.from({length: 9})),
+      scores:[]};
 
     this.playerNameBehavior=new BehaviorSubject<String>(this.player_name);
     this.coupsBehavior=new BehaviorSubject<number>(this.coups);
     this.suggestionBehavior=new BehaviorSubject<boolean>(this.with_suggestion);
     this.gridBehavior=new BehaviorSubject<Grid>(this.grid);
+
     this.endGameEvent=new EventEmitter<boolean>();
 
     this.refreshPage();
-    this.apiServiceSubscribe();
   }
 
-  // run when refresh page: getting data from backend
+  startGame(player_name: String, with_suggestion: boolean, grid: Grid, level: Level){
+    this.level=level;
+    this.grid=grid;
+    this.player_name=player_name;
+    this.with_suggestion=with_suggestion;
+
+    this.gridBehavior.next(grid);
+    this.suggestionBehavior.next(with_suggestion);
+    this.playerNameBehavior.next(player_name);
+
+    localStorage.setItem("grid",JSON.stringify(grid));
+    localStorage.setItem("with_suggestion",String(with_suggestion));
+    localStorage.setItem("player_name",String(player_name));
+    localStorage.setItem("level",String(level));
+  }
   refreshPage(){
-    this.apiService.getGame().then(game=>{
-      this.player_name=game.player_name;
-      this.grid=game.grid;
-      this.coups=game.coups;
-      this.with_suggestion=game.with_suggestion;
+    this.grid=JSON.parse(localStorage.getItem("grid")!) as Grid;
+    this.player_name=localStorage.getItem("player_name")!;
+    this.with_suggestion=JSON.parse(localStorage.getItem("with_suggestion")!);
+    this.level=localStorage.getItem("level")!;
 
-      this.gridBehavior.next(this.grid);
-      this.playerNameBehavior.next(this.player_name);
-      this.coupsBehavior.next(this.coups);
-      this.suggestionBehavior.next(this.with_suggestion);
-
-      this.gridService.verification(this.grid);
-    })
+    this.gridBehavior.next(this.grid);
+    this.suggestionBehavior.next(this.with_suggestion);
+    this.playerNameBehavior.next(this.player_name);
   }
 
   // Get and set value of game service
@@ -67,12 +81,10 @@ export class GameService {
       this.grid.gridElements[x][y]=value;
     }
     this.gridBehavior.next(this.grid);
-    this.apiService.setGrid(this.grid);
   }
   addCoups():void{
     this.coups=this.coups+1;
     this.coupsBehavior.next(this.coups);
-    this.apiService.addCoup();
   }
   getCoups(){
     return this.coupsBehavior.asObservable();
@@ -80,7 +92,7 @@ export class GameService {
   setPlayerName(name:String){
     this.player_name=name;
     this.playerNameBehavior.next(this.player_name);
-    this.apiService.setPlayerName(name);
+    localStorage.setItem("player_name",String(this.player_name));
   }
   getPlayerName():Observable<String>{
     return this.playerNameBehavior.asObservable();
@@ -94,7 +106,9 @@ export class GameService {
     if(this.win()){
       this.notifyEndGame();
       if(!this.with_suggestion){
-        this.sendScore();
+        const headers = { 'content-type': 'application/json'};
+        const body=JSON.stringify(<Score>{score:this.coups, name:this.player_name});
+        this.http.post<Score>("api/game/send_score/"+this.level,body,{'headers':headers});
       }
     }
   }
@@ -111,45 +125,9 @@ export class GameService {
     }
     return this.gridService.validate();
   }
-  sendScore(){
-    this.apiService.getLeaderboard().then(leaderboard =>{
-        const sortedScores=leaderboard.sort((s1,s2)=>{
-          if(s1.score>s2.score) return 1;
-          if(s1.score<s2.score) return -1;
-          return 0;
-        });
-        if(sortedScores.length<5 || this.coups<sortedScores[sortedScores.length-1].score){
-          this.apiService.sendScore(<Score>{name:this.player_name,score:this.coups});
-        }
-      }
-    )
-  }
 
-  // Receive new game data when a game is created by ApiService
-  apiServiceSubscribe(){
-    this.apiService.gridBehavior.asObservable().subscribe(
-      grid=>{
-        this.grid=grid;
-        this.gridBehavior.next(grid);
-      }
-    )
-    this.apiService.suggestionBehavior.asObservable().subscribe(
-      with_suggestion=>{
-        this.with_suggestion=with_suggestion;
-        this.suggestionBehavior.next(with_suggestion);
-      }
-    )
-    this.apiService.coupsBehavior.asObservable().subscribe(
-      coups=>{
-        this.coups=coups;
-        this.coupsBehavior.next(coups);
-      }
-    )
-    this.apiService.playerNameBehavior.asObservable().subscribe(
-      player_name=>{
-        this.player_name=player_name;
-        this.playerNameBehavior.next(player_name);
-      }
-    )
+  // API functions
+  getGrids(){
+    return lastValueFrom(this.http.get<Array<Grid>>("api/game/get_grids"));
   }
 }

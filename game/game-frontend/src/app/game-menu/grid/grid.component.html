@@ -5,7 +5,7 @@
         <div *ngIf="grid.constant[x][y] then disable else change"></div>
         <ng-template #change>
           <div class="able">
-            <mat-label *ngIf="suggestion_mode" class="suggestion">{{suggestions[x][y]}}</mat-label>
+            <mat-label *ngIf="suggestion_mode" class="suggestion" style="color: grey">{{suggestions[x][y].join('')}}</mat-label>
             <mat-select [value]="grid.gridElements[x][y]" class="tile-select"
                         [ngClass]="errors[x][y] ? 'tile-error' : ''"
                         (selectionChange)="selectTileValue(x,y,$event.value)"
@@ -16,7 +16,7 @@
           </div>
         </ng-template>
         <ng-template #disable>
-          <mat-option [ngClass]="errors[x][y] ? 'tile-error' : 'disable'" disabled>{{grid.gridElements[x][y]}}</mat-option>
+          <mat-option (contextmenu)="$event.preventDefault()" [ngClass]="errors[x][y] ? 'tile-error' : 'disable'" disabled>{{grid.gridElements[x][y]}}</mat-option>
         </ng-template>
       </th>
     </tr>

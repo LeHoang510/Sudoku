@@ -1,8 +1,8 @@
 package game.controller;
 
 
-import game.model.Game;
 import game.model.Grid;
+import game.model.Score;
 import game.service.GameService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/game")
@@ -21,29 +23,14 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @PostMapping(path = "new_game", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public boolean startNewGame(@RequestBody Game game) {
-        System.out.println("Starting a new game");
-        return this.gameService.starNewGame(game);
+    @GetMapping(path = "get_grids", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Grid> getGrids() {
+        System.out.println("Getting all difficulty");
+        return this.gameService.getGrids();
     }
-    @GetMapping(path = "game", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Game getGame() {
-        System.out.println("Getting current Game");
-        return this.gameService.getGame();
-    }
-    @PostMapping(path = "set_name/{name}")
-    public String setName(@PathVariable("name") String name) {
-        System.out.println("Updating player name");
-        return this.gameService.setPlayerName(name);
-    }
-    @PostMapping(path = "add_coup")
-    public int addCoup() {
-        System.out.println("Adding coup");
-        return this.gameService.addCoup();
-    }
-    @PostMapping(path = "set_grid", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Grid setGrid(@RequestBody Grid grid) {
-        System.out.println("Setting grid");
-        return this.gameService.setGrid(grid);
+    @PostMapping(path = "send_score/{level}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Score addScore(@RequestBody final Score score, @PathVariable("level") final String level) {
+        System.out.println("Adding score to database");
+        return this.gameService.addScore(level, score);
     }
 }

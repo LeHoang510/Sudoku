@@ -64,3 +64,18 @@ mat-option{
 }
 
 
+/* scrollbar custom*/
+::ng-deep .mat-select-panel::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+::ng-deep .mat-select-panel::-webkit-scrollbar:vertical {
+  width: 11px;
+  background-color: white;
+}
+::ng-deep .mat-select-panel::-webkit-scrollbar-thumb {
+  border-radius: 8px;
+  border: 2px solid white !important; /* should match background, can't be transparent */
+  background-color: gray;
+}
+
+

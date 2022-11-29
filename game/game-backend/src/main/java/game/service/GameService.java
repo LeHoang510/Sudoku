@@ -1,80 +1,74 @@
 package game.service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
-import game.model.Game;
 import game.model.Grid;
+import game.model.Score;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
 @Service
 public class GameService {
-    private File file = Paths.get("src/main/resources/data/game.json").toFile();
-    private ObjectMapper mapper=new ObjectMapper();
-    private ObjectWriter writer= mapper.writer(new DefaultPrettyPrinter());
-    public boolean starNewGame(Game game) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("player_name", game.getPlayer_name());
-        map.put("with_suggestion", game.isWith_suggestion());
-        map.put("coups", 0);
-        Grid grid = new Grid(game.getGrid().getGridElements(), game.getGrid().getConstant());
-        map.put("grid", grid);
+    private ObjectMapper mapper = new ObjectMapper();
+    private ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
+
+    public File getLevelFile(final String level) {
+        String source = "src/main/resources/data/grid/" + level + ".json";
+        return Paths.get(source).toFile();
+    }
+
+    public List<Grid> getGrids() {
+        List<Grid> grids = new ArrayList<>();
         try {
-            writer.writeValue(file, map);
-            return true;
+            System.out.println("-get easy");
+            Grid easy = mapper.readValue(getLevelFile("easy"), Grid.class);
+            System.out.println("-get medium");
+            Grid medium = mapper.readValue(getLevelFile("medium"), Grid.class);
+            System.out.println("-get hard");
+            Grid hard = mapper.readValue(getLevelFile("hard"), Grid.class);
+            System.out.println("-get veryhard");
+            Grid veryhard = mapper.readValue(getLevelFile("veryhard"), Grid.class);
+            System.out.println("-get insane");
+            Grid insane = mapper.readValue(getLevelFile("insane"), Grid.class);
+            System.out.println("-get inhuman");
+            Grid inhuman = mapper.readValue(getLevelFile("inhuman"), Grid.class);
+            System.out.println("=>add to a list");
+            grids.add(easy);
+            grids.add(medium);
+            grids.add(hard);
+            grids.add(veryhard);
+            grids.add(insane);
+            grids.add(inhuman);
+            System.out.println("=>return the list\n\n\n\n");
+            return grids;
         } catch (Exception ex) {
             ex.printStackTrace();
-            return false;
+            return null;
         }
     }
-    public Game getGame() {
+
+    public Score addScore(final String level, final Score score) {
         try {
-            return mapper.readValue(file, Game.class);
+            System.out.println("=>get grid");
+            Grid grid = mapper.readValue(getLevelFile(level), Grid.class);
+            System.out.println("=>adding score");
+            grid.addScore(score);
+            System.out.println("=>update grid");
+            writer.writeValue(getLevelFile(level), grid);
+            System.out.println("=>return score");
+            return score;
         } catch (Exception ex) {
             ex.printStackTrace();
+            return null;
         }
-        return null;
-    }
-    public String setPlayerName(String name) {
-        try {
-            Map<String, Object> game= mapper.readValue(file, new TypeReference<>() {});
-            game.put("player_name", name);
-            writer.writeValue(file, game);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return name;
-    }
-    public int addCoup(){
-        try {
-            Map<String, Object> game= mapper.readValue(file, new TypeReference<>() {});
-            game.put("coups", (Integer) game.get("coups")+1);
-            writer.writeValue(file, game);
-            return (Integer) game.get("coups");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0;
-    }
-    public Grid setGrid(Grid grid){
-        try {
-            Map<String, Object> game= mapper.readValue(file, new TypeReference<>() {});
-            game.put("grid", grid);
-            writer.writeValue(file, game);
-            return (Grid) game.get("grid");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 }

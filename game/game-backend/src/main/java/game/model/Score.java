@@ -12,12 +12,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Score implements Comparable<Score>{
+public class Score implements Comparable<Score> {
     private String name;
     private int score;
-
     @Override
-    public int compareTo(Score score) {
-        return score.score-this.score;
+    public int compareTo(final Score score) {
+        return score.score - this.score;
     }
 }

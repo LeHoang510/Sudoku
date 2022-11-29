@@ -1,23 +1,35 @@
-<main>
-    <p>
-        enter player name :
-        <input #name_entry_box (keyup)="nameInput(name_entry_box.value)">
-    </p>
+<div class="d-flex flex-column container">
+  <mat-form-field style="width:150px; margin: 0">
+    <mat-label>Player name</mat-label>
+    <input #name_entry_box (keyup)="nameInput(name_entry_box.value)" matInput>
+  </mat-form-field>
 
-    <p>
-        <input type="checkbox" [(ngModel)]="with_suggestions" [ngModelOptions]="{standalone: true}"/>
-        use suggestions? (prevents recording score)
-    </p>
+  <mat-checkbox [(ngModel)]="with_suggestions" [ngModelOptions]="{standalone: true}">use suggestions? (prevents recording score)</mat-checkbox>
+  <br>
+  <p>Select a map to play or replay with:</p>
 
-    <p>
-        <select [(ngModel)]="selectedDifficulty" (ngModelChange)="changeDifficulty()">
-          <option *ngFor="let z of difficulties">{{z}}</option>
-        </select>
-    </p>
+  <div class="d-flex flex-column flex-wrap map">
+    <div class="selection">
+      <button mat-button (click)="generatedNewGrid()" style="font-size: 17px; text-align: left">Generate random<br/>board</button>
 
-    <tr *ngFor="let x of [0,1,2,3,4,5,6,7,8]" (click)="goToGamePage()">
-        <th *ngFor="let y of [0,1,2,3,4,5,6,7,8]" >
-            <div style="width: 20px; height: 20px;">{{grid.gridElements[x][y]}}</div>
-        </th>
-    </tr>
-</main>
+      <mat-select style="border: none; width: 100px; background: none; margin-top: 7px" [(ngModel)]="selectedDifficulty" (ngModelChange)="changeDifficulty()">
+        <mat-option *ngFor="let z of difficulties" value="{{z}}">{{z}}</mat-option>
+      </mat-select>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <button mat-button (click)="goToGamePage()" style="font-size: 18px">
+        <table>
+          <tr *ngFor="let x of [0,1,2,3,4,5,6,7,8]" >
+            <th *ngFor="let y of [0,1,2,3,4,5,6,7,8]" >
+              <div></div>
+              <div *ngIf="current_grid.gridElements[x][y]!=0" style="width: 20px; height: 20px;">{{current_grid.gridElements[x][y]}}</div>
+            </th>
+          </tr>
+        </table>
+      </button>
+    </div>
+  </div>
+
+
+</div>
