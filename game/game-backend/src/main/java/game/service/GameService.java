@@ -59,7 +59,7 @@ public class GameService {
     public Score addScore(final String level, final Score score) {
         try {
             System.out.println("=>get grid");
-            Grid grid = mapper.readValue(getLevelFile(level), Grid.class);
+            final Grid grid = mapper.readValue(getLevelFile(level), Grid.class);
             System.out.println("=>adding score");
             grid.addScore(score);
             System.out.println("=>update grid");
