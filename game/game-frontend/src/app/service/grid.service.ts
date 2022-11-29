@@ -1,110 +1,55 @@
-import { Injectable } from '@angular/core';
-import {Grid} from "../model/grid";
-import {GameService} from "./game.service";
-import {Level} from "../model/level";
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
+import {Grid} from "../model/grid";
 
 @Injectable({
   providedIn: 'root'
 })
 export class GridService {
-  grid: Grid;
   errors: boolean[][];
-  constant: boolean[][];
   suggestions: number[][][];
 
-  gridBehavior: BehaviorSubject<Grid>;
   errorsBehavior: BehaviorSubject<boolean[][]>;
   suggestionsBehavior: BehaviorSubject<number[][][]>;
 
-  constructor(private gameService: GameService) {
-    this.grid=<Grid>{gridElement:Array.from({length: 9}, () => Array.from({length: 9}))};
-    this.constant=Array.from({length: 9}, () => Array.from({length: 9}));
-    this.errors=Array.from({length: 9}, () => Array.from({length: 9}));
-    this.suggestions=Array.from({length: 9}, () => Array.from({length: 9},()=> Array.from({length: 9})));
+  constructor() {
+    this.errors=[];
+    this.suggestions=[];
 
     this.errorsInit();
-    this.constantInit();
+    this.suggestionsInit();
 
-    this.gameService.generateGrid(Level.INHUMAN)
-      .then(gridString => {
-          let grid=gridString.split('');
-          for(let i=0; i<9;i++){
-            for(let j=0; j<9;j++){
-              let val=Number(grid[j + i * 9])
-              this.grid.gridElement[i][j]=val;
-              if(val==0){
-                this.constant[i][j]=false;
-              }
-            }
-          }
-        }
-      )
-
-    this.gridBehavior=new BehaviorSubject<Grid>(this.grid);
     this.errorsBehavior=new BehaviorSubject<boolean[][]>(this.errors);
     this.suggestionsBehavior=new BehaviorSubject<number[][][]>(this.suggestions);
   }
 
   // Attribute initialisation
-  errorsInit(){
-    for(let i=0; i<9; i++){
-      for(let j=0; j<9; j++){
-        this.errors[i][j]=false;
+  errorsInit() {
+    for (let i: number = 0; i < 9; i++) {
+      this.errors[i] = [];
+      for (let j: number = 0; j < 9; j++) {
+        this.errors[i][j] = false;
       }
     }
   }
-  constantInit(){
-    for(let i=0; i<9; i++){
-      for(let j=0; j<9; j++){
-        this.constant[i][j]=true;
+  suggestionsInit(){
+    for (let i: number = 0; i < 9; i++) {
+      this.suggestions[i] = [];
+      for (let j: number = 0; j < 9; j++) {
+        this.suggestions[i][j] = Array.from(Array(9+1).keys()).slice(1);
       }
     }
   }
 
   // Get functions
-  getGrid():Observable<Grid>{
-    return this.gridBehavior.asObservable();
-  }
   getErrors():Observable<boolean[][]>{
     return this.errorsBehavior.asObservable();
   }
   getSuggestions():Observable<number[][][]>{
     return this.suggestionsBehavior.asObservable();
   }
-  getConstant():boolean[][]{
-    return this.constant;
-  }
-
-  // Set functions
-  setTile(x:number,y:number,value:number){
-    this.gameService.addCoups();
-    if(value==undefined){
-      this.grid.gridElement[x][y]=0;
-    }else {
-      this.grid.gridElement[x][y]=value;
-    }
-    this.gridBehavior.next(this.grid);
-    this.verification();
-    if(this.checkEndGame()){
-      this.notifyEndGame();
-    }
-  }
-
-  // Notify end game
-  notifyEndGame(){
-    this.gameService.notifyEndGame();
-  }
-
-  // Check end game
-  checkEndGame():boolean{
-    for(let i=0; i<9; i++){
-      for(let j=0; j<9; j++){
-        if(this.grid.gridElement[i][j]==0){
-          return false;
-        }
-      }
-    }
+  // check if there is any error
+  validate():boolean{
     for(let i=0; i<9; i++){
       for(let j=0; j<9; j++){
         if(this.errors[i][j]){
@@ -115,21 +60,20 @@ export class GridService {
     return true;
   }
 
-
   // Verification functions
-  verification(){
+  verification(grid: Grid){
     this.errorsInit();
     for (let i =0 ; i< 9; i++) {
-      this.row_validation(i);
-      this.col_validation(i);
+      this.row_validation(grid,i);
+      this.col_validation(grid,i);
     }
-    this.squares_validation();
+    this.squares_validation(grid);
     this.errorsBehavior.next(this.errors);
   }
-  row_validation(x:number){
+  row_validation(grid:Grid,x:number){
     let row_valid=new Map();
     for(let i=0; i<9; i++){
-      let val=this.grid.gridElement[x][i];
+      let val=grid.gridElements[x][i];
       if(val!=0){
         if(row_valid.has(val)){
           this.errors[x][i]=true;
@@ -140,10 +84,10 @@ export class GridService {
       }
     }
   }
-  col_validation(y:number){
+  col_validation(grid:Grid,y:number){
     let col_valid=new Map();
     for(let i=0; i<9; i++){
-      let val=this.grid.gridElement[i][y];
+      let val=grid.gridElements[i][y];
       if(val!=0){
         if(col_valid.has(val)){
           this.errors[i][y]=true;
@@ -154,13 +98,13 @@ export class GridService {
       }
     }
   }
-  squares_validation(){
+  squares_validation(grid:Grid){
     for (let row = 0 ; row < 9; row = row + 3) {
       for (let col = 0; col < 9; col = col + 3) {
         let squares_valid=new Map();
         for(let r = row; r < row+3; r++) {
           for(let c= col; c < col+3; c++){
-            let val=this.grid.gridElement[r][c];
+            let val=grid.gridElements[r][c];
             if(val != 0){
               if(squares_valid.has(val)){
                 this.errors[r][c]=true;
@@ -173,6 +117,58 @@ export class GridService {
         }
       }
     }
+  }
+
+
+  generateSuggestion(grid: Grid){
+    this.suggestionsInit();
+    for (let i =0 ; i< 9; i++) {
+      this.row_remove(grid,i);
+      this.col_remove(grid,i);
+    }
+    this.squares_remove(grid);
+    this.suggestionsBehavior.next(this.suggestions);
+  }
+  row_remove(grid:Grid,x:number){
+    for(let i=0; i<9; i++){
+      for(let j=0; j<9; j++){
+        let val=grid.gridElements[x][j];
+        this.suggestions[x][i]=this.suggestions[x][i].filter((element)=>{
+          return element!=val;
+        });
+      }
+    }
+  }
+  col_remove(grid:Grid,y:number){
+    for(let i=0; i<9; i++){
+      for(let j=0; j<9; j++){
+        let val=grid.gridElements[j][y];
+        this.suggestions[i][y]=this.suggestions[i][y].filter((element)=>{
+          return element!=val;
+        });
+      }
+    }
+  }
+  squares_remove(grid:Grid){
+    for (let row = 0 ; row < 9; row = row + 3) {
+      for (let col = 0; col < 9; col = col + 3) {
+        for(let r = row; r < row+3; r++) {
+          for(let c= col; c < col+3; c++){
+            for(let a = row; r < row+3; r++) {
+              for (let b = col; c < col + 3; c++) {
+                let val = grid.gridElements[a][b];
+                this.suggestions[r][c] = this.suggestions[r][c].filter((element) => {
+                  return element != val;
+                });
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  notEquals(element:number, val:number){
+    return element!=val;
   }
 
 }

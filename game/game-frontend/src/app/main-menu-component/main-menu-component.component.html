@@ -3,21 +3,21 @@
         enter player name :
         <input #name_entry_box (keyup)="nameInput(name_entry_box.value)">
     </p>
-    
+
     <p>
-        <input type="checkbox" [(ngModel)]="with_suggestions" [ngModelOptions]="{standalone: true}"/> 
+        <input type="checkbox" [(ngModel)]="with_suggestions" [ngModelOptions]="{standalone: true}"/>
         use suggestions? (prevents recording score)
     </p>
-    
+
     <p>
-        <select [(ngModel)]="selectedDifficulty">
+        <select [(ngModel)]="selectedDifficulty" (ngModelChange)="changeDifficulty()">
           <option *ngFor="let z of difficulties">{{z}}</option>
         </select>
     </p>
-    
+
     <tr *ngFor="let x of [0,1,2,3,4,5,6,7,8]" (click)="goToGamePage()">
         <th *ngFor="let y of [0,1,2,3,4,5,6,7,8]" >
-            <div style="width: 20px; height: 20px;">{{grid.gridElement[x][y]}}</div>
+            <div style="width: 20px; height: 20px;">{{grid.gridElements[x][y]}}</div>
         </th>
     </tr>
 </main>

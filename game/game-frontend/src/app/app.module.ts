@@ -23,6 +23,7 @@ import {GameMenuComponent} from './game-menu/game-menu.component';
 import {MatDialogModule} from "@angular/material/dialog";
 import { LeaderboardComponent } from './game-menu/leaderboard/leaderboard.component';
 import { EndGameComponent } from './game-menu/end-game/end-game.component';
+import {MatCardModule} from "@angular/material/card";
 
 
 @NgModule({
@@ -36,24 +37,25 @@ import { EndGameComponent } from './game-menu/end-game/end-game.component';
     LeaderboardComponent,
     EndGameComponent
   ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    InteractoModule,
-    MatSelectModule,
-    MatInputModule,
-    MatFormFieldModule,
-    MatButtonModule,
-    MatIconModule,
-    BrowserAnimationsModule,
-    MatIconModule,
-    MatListModule,
-    FormsModule,
-    MatCheckboxModule,
-    RouterModule,
-    MatDialogModule
-  ],
+    imports: [
+        BrowserModule,
+        AppRoutingModule,
+        HttpClientModule,
+        InteractoModule,
+        MatSelectModule,
+        MatInputModule,
+        MatFormFieldModule,
+        MatButtonModule,
+        MatIconModule,
+        BrowserAnimationsModule,
+        MatIconModule,
+        MatListModule,
+        FormsModule,
+        MatCheckboxModule,
+        RouterModule,
+        MatDialogModule,
+        MatCardModule
+    ],
   providers: [interactoTreeUndoProviders(true)],
   bootstrap: [AppComponent]
 })

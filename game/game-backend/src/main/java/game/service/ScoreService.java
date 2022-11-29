@@ -1,27 +1,50 @@
 package game.service;
 
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import game.model.Score;
-import game.repository.ScoreRepository;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Getter
 @Setter
 @Service
 public class ScoreService {
-    private final ScoreRepository scoreRepository;
-
-    public ScoreService(final ScoreRepository scoreRepository) {
-        this.scoreRepository = scoreRepository;
-
-    }
+    private File file = Paths.get("src/main/resources/data/leaderboard.json").toFile();
+    private ObjectMapper mapper=new ObjectMapper();
+    private ObjectWriter writer= mapper.writer(new DefaultPrettyPrinter());
     public List<Score> getLeaderboard() {
-        return scoreRepository.findAll();
+        try {
+            return Arrays.asList(mapper.readValue(file,Score[].class));
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
-    public void saveLeaderboard(final List<Score> scores) {
-        scoreRepository.saveAll(scores);
+    public Score addScore(Score score){
+        try {
+            List<Score> leaderboard = new ArrayList<>(Arrays.asList(mapper.readValue(file,Score[].class)));
+            if(leaderboard.size()<5){
+                leaderboard.add(score);
+            }else{
+                Collections.sort(leaderboard);
+                leaderboard.set(0, score);
+            }
+            writer.writeValue(file, leaderboard);
+            return score;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 }

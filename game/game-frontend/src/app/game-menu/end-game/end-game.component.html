@@ -1,6 +1,10 @@
-<h1>End Game {{data.name}}!</h1>
-<p>Score: {{data.score}}</p>
-<div class="center">
-  <button mat-button (click)="onMenuClick()">menu</button>
-</div>
+<mat-card style="background: blanchedalmond">
+  <mat-card-content>
+    <h1>End Game {{gameService.player_name}}!</h1>
+    <h4>Score: {{gameService.coups}}</h4>
+    <div class="center">
+      <button mat-raised-button (click)="onMenuClick()">menu</button>
+    </div></mat-card-content>
+</mat-card>
+
 

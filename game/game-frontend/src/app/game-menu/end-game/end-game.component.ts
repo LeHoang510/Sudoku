@@ -1,6 +1,6 @@
-import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {EndGameData} from "../game-menu.component";
+import {Component, OnInit} from '@angular/core';
+import {Router} from "@angular/router";
+import {GameService} from "../../service/game.service";
 
 @Component({
   selector: 'app-end-game',
@@ -9,12 +9,14 @@ import {EndGameData} from "../game-menu.component";
 })
 export class EndGameComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<EndGameComponent>, @Inject(MAT_DIALOG_DATA) public data: EndGameData) {}
+  constructor(public gameService:GameService, private router:Router) {}
 
   ngOnInit(): void {}
 
   onMenuClick(): void {
-    // to menu
+    this.router.navigate(["/menu"]).then(()=>{
+      console.log("to menu");
+    });
   }
 
 }

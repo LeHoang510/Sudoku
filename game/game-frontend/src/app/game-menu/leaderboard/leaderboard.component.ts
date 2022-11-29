@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {MatDialogRef} from "@angular/material/dialog";
 import {Score} from "../../model/score";
-import {GameService} from "../../service/game.service";
+import {ApiService} from "../../service/api.service";
 
 @Component({
   selector: 'app-leaderboard',
@@ -10,15 +9,21 @@ import {GameService} from "../../service/game.service";
 })
 export class LeaderboardComponent implements OnInit {
   leaderboard: Score[];
+  length: number[];
 
-  constructor(public dialogRef: MatDialogRef<LeaderboardComponent>, private gameService: GameService) {
+  constructor(private apiService: ApiService) {
     this.leaderboard=[];
+    this.length=[];
   }
 
   ngOnInit(): void {
-    this.gameService.getLeaderboard()
-      .then(leaderboard =>{
-       this.leaderboard=leaderboard;
+    this.apiService.getLeaderboard().then(leaderboard =>{
+       this.leaderboard=leaderboard.sort((s1,s2)=>{
+         if(s1.score>s2.score) return 1;
+         if(s1.score<s2.score) return -1;
+         return 0;
+       });
+       this.length=Array.from(Array(leaderboard.length).keys());
       }
     )
   }

@@ -10,10 +10,10 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let score of leaderboard">
-        <th scope="row">#{{score.rank}}</th>
-        <td>{{score.name}}</td>
-        <td>{{score.score}}</td>
+      <tr *ngFor="let x of length">
+        <th scope="row">#{{x+1}}</th>
+        <td>{{leaderboard[x].name}}</td>
+        <td>{{leaderboard[x].score}}</td>
       </tr>
       </tbody>
     </table>

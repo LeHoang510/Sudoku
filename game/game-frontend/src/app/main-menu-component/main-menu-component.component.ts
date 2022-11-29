@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Grid } from '../model/grid';
-import { GridService } from '../service/grid.service';
-import {GameService} from "../service/game.service";
+import {Level} from "../model/level";
+import {ApiService} from "../service/api.service";
+import {lastValueFrom} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-main-menu-component',
@@ -13,12 +15,21 @@ export class MainMenuComponentComponent implements OnInit {
 
   grid:Grid;
 
-  constructor(private router: Router, private gridService:GridService, private gameService: GameService) {
-    this.grid={gridElement:[]};
-    this.gridService.getGrid().subscribe(grid => this.grid=grid);
+  // use suggestions or no
+  with_suggestions : boolean = false;
+
+  selectedDifficulty : Level;
+  difficulties: String[]= [Level.EASY,Level.MEDIUM,Level.HARD,Level.VERY_HARD,Level.INSANE,Level.INHUMAN];
+
+  constructor(private router: Router, private apiService: ApiService, private http:HttpClient) {
+    this.selectedDifficulty=Level.EASY;
+    this.grid={gridElements:Array.from({length: 9}, () => Array.from({length: 9})),
+      constant:Array.from({length: 9}, () => Array.from({length: 9}))};
    }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.changeDifficulty().then(() => console.log("grid is generated"));
+  }
 
   // user's desired name
   user_name : string = ""
@@ -26,23 +37,31 @@ export class MainMenuComponentComponent implements OnInit {
     this.user_name = s;
   }
 
-  // use suggestions or no
-  with_suggestions : boolean = false;
-
-  selectedDifficulty : "easy" | "medium" | "hard" | "very hard" = "easy";
-  difficulties : string[] = ["easy", "medium", "hard", "very hard"];
-
-
+  async changeDifficulty(){
+    const gridElements: number[][]=[];
+    let url="sudoku-provider/"+this.selectedDifficulty;
+    await lastValueFrom(this.http.get(url,{ responseType: 'text'})).then(
+      text=>{
+        let gridString=text.split('');
+        for(let i:number=0; i<9;i++){
+          gridElements[i]=[];
+          for(let j:number=0; j<9;j++){
+            gridElements[i][j]=Number(gridString[j + i * 9]);
+          }
+        }
+      }
+    )
+    this.grid=new Grid(gridElements);
+  }
 
   goToGamePage() : void{
-    console.log("TODO implement link");
-    console.log("user_name : " + this.user_name);
-    this.gameService.setPlayerName(this.user_name);
-    console.log("with_suggestions : " + this.with_suggestions);
-    if(this.with_suggestions){
-      this.gameService.enableSuggestion();
+    let player_name=this.user_name;
+    if(player_name.trim()==""){
+      player_name="foo";  // random name
     }
-    console.log("selectedDifficulty : " + this.selectedDifficulty);
-    this.router.navigate(["/game"]);
+    this.apiService.startGame(player_name, this.with_suggestions, this.grid);
+    this.router.navigate(["/game"]).then(()=>{
+      console.log("next page");
+    });
   }
 }
