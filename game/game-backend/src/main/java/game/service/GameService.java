@@ -50,6 +50,9 @@ public class GameService {
             grids.add(inhuman);
             System.out.println("=>return the list\n\n\n\n");
             return grids;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return null;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
@@ -66,6 +69,9 @@ public class GameService {
             writer.writeValue(getLevelFile(level), grid);
             System.out.println("=>return score");
             return score;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return null;
         } catch (Exception ex) {
             ex.printStackTrace();
             return null;
