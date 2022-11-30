@@ -1,16 +1,13 @@
 [ {
-  "name" : "foo",
-  "score" : 2
+  "name" : "Hoang1",
+  "score" : 25
 }, {
-  "name" : "ho",
-  "score" : 18
+  "name" : "Yolo2",
+  "score" : 50
 }, {
-  "name" : "ho",
-  "score" : 18
+  "name" : "Yolo3",
+  "score" : 75
 }, {
-  "name" : "foo",
-  "score" : 0
-}, {
-  "name" : "foo",
-  "score" : 0
+  "name" : "Yolo4",
+  "score" : 100
 } ]
