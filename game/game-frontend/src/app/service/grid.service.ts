@@ -150,13 +150,12 @@ export class GridService {
     }
   }
   squares_remove(grid:Grid){
-    // TODO
     for (let row = 0 ; row < 9; row = row + 3) {
       for (let col = 0; col < 9; col = col + 3) {
         for(let r = row; r < row+3; r++) {
           for(let c= col; c < col+3; c++){
-            for(let a = row; r < row+3; r++) {
-              for (let b = col; c < col + 3; c++) {
+            for(let a = row; a < row+3; a++) {
+              for (let b = col; b < col + 3; b++) {
                 let val = grid.gridElements[a][b];
                 this.suggestions[r][c] = this.suggestions[r][c].filter((element) => {
                   return element != val;

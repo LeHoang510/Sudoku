@@ -13,6 +13,7 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Arrays;
 
 @Getter
 @Setter
@@ -21,8 +22,12 @@ public class GameService {
     private ObjectMapper mapper = new ObjectMapper();
     private ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 
-    public File getLevelFile(final String level) {
+    public File getGridFile(final String level) {
         final String source = "src/main/resources/data/grid/" + level + ".json";
+        return Paths.get(source).toFile();
+    }
+    public File getLeaderboardFile(final String level) {
+        final String source = "src/main/resources/data/leaderboard/" + level + ".json";
         return Paths.get(source).toFile();
     }
 
@@ -30,17 +35,17 @@ public class GameService {
         final List<Grid> grids = new ArrayList<>();
         try {
             System.out.println("-get easy");
-            final Grid easy = mapper.readValue(getLevelFile("easy"), Grid.class);
+            final Grid easy = mapper.readValue(getGridFile("easy"), Grid.class);
             System.out.println("-get medium");
-            final Grid medium = mapper.readValue(getLevelFile("medium"), Grid.class);
+            final Grid medium = mapper.readValue(getGridFile("medium"), Grid.class);
             System.out.println("-get hard");
-            final Grid hard = mapper.readValue(getLevelFile("hard"), Grid.class);
+            final Grid hard = mapper.readValue(getGridFile("hard"), Grid.class);
             System.out.println("-get veryhard");
-            final Grid veryhard = mapper.readValue(getLevelFile("veryhard"), Grid.class);
+            final Grid veryhard = mapper.readValue(getGridFile("veryhard"), Grid.class);
             System.out.println("-get insane");
-            final Grid insane = mapper.readValue(getLevelFile("insane"), Grid.class);
+            final Grid insane = mapper.readValue(getGridFile("insane"), Grid.class);
             System.out.println("-get inhuman");
-            final Grid inhuman = mapper.readValue(getLevelFile("inhuman"), Grid.class);
+            final Grid inhuman = mapper.readValue(getGridFile("inhuman"), Grid.class);
             System.out.println("=>add to a list");
             grids.add(easy);
             grids.add(medium);
@@ -59,15 +64,45 @@ public class GameService {
         }
     }
 
+    public List<Score> getLeaderboard(final String level) {
+        try {
+            final List<Score> leaderboard = Arrays.asList(mapper.readValue(getLeaderboardFile(level), Score[].class));
+            System.out.println("=>return the list\n\n\n\n");
+            return leaderboard;
+        } catch (RuntimeException e) {
+            e.printStackTrace();
+            return null;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
+    }
+
     public Score addScore(final String level, final Score score) {
         try {
-            System.out.println("=>get grid");
-            final Grid grid = mapper.readValue(getLevelFile(level), Grid.class);
+            System.out.println("=>get leaderboard");
+            final Score[] leaderboard = mapper.readValue(getLeaderboardFile(level), Score[].class);
             System.out.println("=>adding score");
-            grid.addScore(score);
-            System.out.println("=>update grid");
-            writer.writeValue(getLevelFile(level), grid);
-            System.out.println("=>return score");
+            final int length = leaderboard.length;
+            if (length < 5) {
+                final Score[] scores = new Score[length + 1];
+                System.arraycopy(leaderboard, 0, scores, 0, length);
+                scores[length] = score;
+                System.out.println("=>update leaderboard");
+                writer.writeValue(getLeaderboardFile(level), scores);
+                System.out.println("=>success");
+            } else {
+                Arrays.sort(leaderboard);
+                if (score.getScore() < leaderboard[0].getScore()) {
+                    leaderboard[0] = score;
+                    System.out.println("=>update leaderboard");
+                    writer.writeValue(getLeaderboardFile(level), leaderboard);
+                    System.out.println("=>success");
+                } else {
+                    System.out.println("=>fail");
+                }
+            }
+            System.out.println("=>return score\n\n\n\n");
             return score;
         } catch (RuntimeException e) {
             e.printStackTrace();
@@ -77,4 +112,5 @@ public class GameService {
             return null;
         }
     }
+
 }

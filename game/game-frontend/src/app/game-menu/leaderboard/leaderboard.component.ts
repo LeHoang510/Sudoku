@@ -17,11 +17,13 @@ export class LeaderboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.leaderboard=this.gameService.grid.scores.sort((s1,s2)=>{
-      if(s1.score>s2.score) return 1;
-      if(s1.score<s2.score) return -1;
-      return 0;
-    });
-    this.length=Array.from(Array(this.leaderboard.length).keys());
+    this.gameService.getLeaderboard().then(leaderboard => {
+      this.leaderboard = leaderboard.sort((s1,s2)=>{
+        if(s1.score > s2.score) return 1;
+        if(s1.score < s2.score) return -1;
+        return 0;
+      });
+      this.length=Array.from(Array(this.leaderboard.length).keys());
+    })
   }
 }

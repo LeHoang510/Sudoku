@@ -48,10 +48,12 @@ export class GameService {
     this.grid=grid;
     this.player_name=player_name;
     this.with_suggestion=with_suggestion;
+    this.coups=0;
 
     this.gridBehavior.next(grid);
     this.suggestionBehavior.next(with_suggestion);
     this.playerNameBehavior.next(player_name);
+    this.coupsBehavior.next(0);
 
     localStorage.setItem("grid",JSON.stringify(grid));
     localStorage.setItem("with_suggestion",String(with_suggestion));
@@ -108,7 +110,9 @@ export class GameService {
       if(!this.with_suggestion){
         const headers = { 'content-type': 'application/json'};
         const body=JSON.stringify(<Score>{score:this.coups, name:this.player_name});
-        this.http.post<Score>("api/game/send_score/"+this.level,body,{'headers':headers});
+        this.http.post<Score>("api/game/send_score/"+this.level,body,{'headers':headers}).subscribe(()=>
+          console.log("run")
+        );
       }
     }
   }
@@ -128,6 +132,9 @@ export class GameService {
 
   // API functions
   getGrids(){
-    return lastValueFrom(this.http.get<Array<Grid>>("api/game/get_grids"));
+    return lastValueFrom(this.http.get<Array<Grid>>("api/game/grids"));
+  }
+  getLeaderboard(){
+    return lastValueFrom(this.http.get<Array<Score>>("api/game/leaderboard/"+ this.level));
   }
 }

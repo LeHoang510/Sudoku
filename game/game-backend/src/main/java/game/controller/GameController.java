@@ -23,14 +23,20 @@ public class GameController {
         this.gameService = gameService;
     }
 
-    @GetMapping(path = "get_grids", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "grids", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Grid> getGrids() {
         System.out.println("Getting all difficulty");
         return this.gameService.getGrids();
     }
-    @PostMapping(path = "send_score/{level}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "send_score/{level}", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Score addScore(@RequestBody final Score score, @PathVariable("level") final String level) {
         System.out.println("Adding score to database");
+        System.out.println(score);
         return this.gameService.addScore(level, score);
+    }
+    @GetMapping(path = "leaderboard/{level}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Score> getLeaderboard(@PathVariable("level") final String level) {
+        System.out.println("Getting leaderboard");
+        return this.gameService.getLeaderboard(level);
     }
 }

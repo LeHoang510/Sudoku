@@ -45,12 +45,8 @@ export class GridComponent implements OnInit {
   }
   setTileValueRightClick(event:Event,x:number,y:number){
     event.preventDefault();
-    if(this.gameService.with_suggestion){
+    if(this.gameService.with_suggestion || this.suggestions[x][y].length==1){
       this.selectTileValue(x,y,this.suggestions[x][y][0]);
     }
   }
-  setTileValueKeyboard(event:Event,x:number,y:number){
-    console.log(event);
-  }
-
 }

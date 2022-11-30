@@ -25,7 +25,7 @@ export class GameMenuComponent implements OnInit {
     this.gameService.getPlayerName().subscribe(name=>{
       this.player_name=name;
     });
-    this.gameService.endGameEvent.subscribe(response => this.openEndgame());
+    this.gameService.endGameEvent.subscribe(() => this.openEndgame());
   }
 
   setPlayerName(event: Event): void{

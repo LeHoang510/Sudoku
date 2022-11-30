@@ -1,25 +1,18 @@
-{
-  "gridElements" : [
-    [0, 0, 0, 0, 7, 4, 3, 0, 0],
-    [0, 0, 0, 0, 0, 0, 7, 5, 0],
-    [7, 0, 0, 0, 0, 3, 2, 0, 0],
-    [0, 0, 0, 7, 0, 5, 0, 6, 1],
-    [0, 6, 0, 1, 0, 8, 0, 2, 0],
-    [9, 1, 7, 6, 4, 2, 5, 8, 3],
-    [0, 0, 0, 9, 2, 7, 1, 0, 5],
-    [2, 7, 5, 3, 8, 1, 6, 4, 9],
-    [1, 0, 0, 4, 5, 6, 0, 0, 2]
-  ],
-  "constant" : [
-    [false, false, false, false, true, true, true, false, false],
-    [false, false, false, false, false, false, true, true, false],
-    [true, false, false, false, false, true, true, false, false],
-    [false, false, false, true, false, true, false, true, true],
-    [false, true, false, true, false, true, false, true, false],
-    [true, true, true, true, true, true, true, true, true],
-    [false, false, false, true, true, true, true, false, true],
-    [true, true, true, true, true, true, true, true, true],
-    [true, false, false, true, true, true, false, false, true]
-  ],
-  "scores" : []
-}
+[
+  {
+    "name": "Hoang1",
+    "score": 25
+  },
+  {
+    "name": "Yolo2",
+    "score": 50
+  },
+  {
+    "name": "Yolo3",
+    "score": 75
+  },
+  {
+    "name": "Yolo4",
+    "score": 100
+  }
+]
