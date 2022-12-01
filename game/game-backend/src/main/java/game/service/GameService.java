@@ -72,6 +72,7 @@ public class GameService {
         try {
             final Score[] leaderboard = mapper.readValue(getLeaderboardFile(level), Score[].class);
             final int length = leaderboard.length;
+            /*
             for (Score value : leaderboard) {
                 if (score.getName().equals(value.getName())) {
                     if (score.getScore() <= value.getScore()) {
@@ -80,6 +81,18 @@ public class GameService {
                     }
                     return score;
                 }
+            }
+
+             */
+            final Score[] leaderboard_match = Arrays.stream(leaderboard)
+                    .filter(value -> score.getName().equals(value.getName()))
+                    .toArray(Score[]::new);
+            if (leaderboard_match.length > 0){
+                if (score.getScore() <= leaderboard_match[0].getScore()) {
+                    leaderboard_match[0].setScore(score.getScore());
+                    writer.writeValue(getLeaderboardFile(level), leaderboard);
+                }
+                return score;
             }
             if (length < 5) {
                 final Score[] scores = new Score[length + 1];
@@ -102,5 +115,4 @@ public class GameService {
             return null;
         }
     }
-
 }
