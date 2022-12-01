@@ -87,7 +87,7 @@ public class GameService {
             final Score[] leaderboard_match = Arrays.stream(leaderboard)
                     .filter(value -> score.getName().equals(value.getName()))
                     .toArray(Score[]::new);
-            if (leaderboard_match.length > 0){
+            if (leaderboard_match.length > 0) {
                 if (score.getScore() <= leaderboard_match[0].getScore()) {
                     leaderboard_match[0].setScore(score.getScore());
                     writer.writeValue(getLeaderboardFile(level), leaderboard);
