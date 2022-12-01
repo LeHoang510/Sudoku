@@ -2,13 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {GameService} from "../service/game.service";
 import {MatDialog} from "@angular/material/dialog";
 import {LeaderboardComponent} from "./leaderboard/leaderboard.component";
-import {EndGameComponent} from "./end-game/end-game.component";
 
-
-export interface EndGameData {
-  name: string;
-  score: number;
-}
 
 @Component({
   selector: 'app-game-menu',
@@ -31,7 +25,7 @@ export class GameMenuComponent implements OnInit {
     this.gameService.getPlayerName().subscribe(name=>{
       this.player_name=name;
     });
-    this.gameService.endGameEvent.subscribe(response => this.openEndgame());
+    this.gameService.endGameEvent.subscribe(() => this.openEndgame());
   }
 
   setPlayerName(event: Event): void{
@@ -45,10 +39,10 @@ export class GameMenuComponent implements OnInit {
     });
   }
   openEndgame(): void{
-    this.dialog.open(EndGameComponent, {
-      width: '600px',
-      data: {name: this.player_name, score: this.coups},
-    });
+    let element = document.getElementById("end-game");
+    if (element != null) {
+      element.style.display = 'block';
+    }
   }
 }
 

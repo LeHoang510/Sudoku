@@ -1,34 +1,37 @@
+<div id="game">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm">
+        <div class="history-section">
+          <h2>HISTORY</h2>
+          <button class="button">undo</button>
+          <button class="button">redo</button>
+        </div>
 
-<div class="container-fluid">
-  <div class="row">
-    <div class="col-sm">
-      <div class="history-section">
-        <h2>HISTORY</h2>
-        <button class="button">undo</button>
-        <button class="button">redo</button>
       </div>
-
-    </div>
-    <div class="col-sm">
-      <app-grid></app-grid>
-    </div>
-    <div class="col-sm">
-      <div id="side-info">
-        <div class="col-sm">
-          <button class="leaderboard" (click)="openLeaderboard()">
-            <img src="./assets/ranking.svg" style="max-width:75%" alt="leaderboard"/>
-          </button>
-        </div>
-        <div class="col-sm">
-          <mat-form-field appearance="fill">
-            <mat-label>Joueur</mat-label>
-            <input matInput (change)="setPlayerName($event)" value="{{player_name}}">
-          </mat-form-field>
-        </div>
-        <div class="col-sm">
-          <h2>Coups:{{coups}}</h2>
+      <div class="col-sm">
+        <app-grid></app-grid>
+      </div>
+      <div class="col-sm">
+        <div id="side-info">
+          <div class="col-sm">
+            <button class="leaderboard" (click)="openLeaderboard()">
+              <img src="./assets/ranking.svg" style="max-width:75%" alt="leaderboard"/>
+            </button>
+          </div>
+          <div class="col-sm">
+            <mat-form-field appearance="fill">
+              <mat-label>Joueur</mat-label>
+              <input matInput (change)="setPlayerName($event)" value="{{player_name}}">
+            </mat-form-field>
+          </div>
+          <div class="col-sm">
+            <h2>Coups:{{coups}}</h2>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  <app-end-game id="end-game" style="display: none"></app-end-game>
 </div>
+

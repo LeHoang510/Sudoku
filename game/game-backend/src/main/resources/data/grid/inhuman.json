@@ -1,0 +1,24 @@
+{
+  "gridElements" : [
+    [0, 0, 0, 0, 5, 0, 3, 2, 0],
+    [0, 0, 0, 0, 0, 7, 0, 0, 0],
+    [0, 0, 0, 0, 2, 1, 8, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 6],
+    [7, 0, 0, 0, 0, 9, 0, 0, 0],
+    [9, 0, 0, 0, 0, 5, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0, 0, 9],
+    [0, 0, 0, 0, 0, 0, 4, 1, 0],
+    [0, 7, 5, 0, 0, 0, 0, 0, 0]
+  ],
+  "constant" : [
+    [false, false, false, false, true, false, true, true, false],
+    [false, false, false, false, false, true, false, false, false],
+    [false, false, false, false, true, true, true, false, false],
+    [false, false, false, false, false, false, false, false, true],
+    [true, false, false, false, false, true, false, false, false],
+    [true, false, false, false, false, true, false, false, false],
+    [false, false, false, false, false, false, false, false, true],
+    [false, false, false, false, false, false, true, true, false],
+    [false, true, true, false, false, false, false, false, false]
+  ]
+}

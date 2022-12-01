@@ -1,7 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { Grid } from '../model/grid';
-import { GridService } from '../service/grid.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {Grid} from '../model/grid';
+import {Level} from "../model/level";
+import {lastValueFrom} from "rxjs";
+import {HttpClient} from "@angular/common/http";
 import {GameService} from "../service/game.service";
 
 @Component({
@@ -10,15 +12,33 @@ import {GameService} from "../service/game.service";
   styleUrls: ['./main-menu-component.component.css']
 })
 export class MainMenuComponentComponent implements OnInit {
+  grids:Map<Level,Grid>;
+  current_grid:Grid;
+  // use suggestions or no
+  with_suggestions : boolean = false;
 
-  grid:Grid;
+  selectedDifficulty : Level;
+  difficulties: String[]= [Level.EASY,Level.MEDIUM,Level.HARD,Level.VERY_HARD,Level.INSANE,Level.INHUMAN];
 
-  constructor(private router: Router, private gridService:GridService, private gameService: GameService) {
-    this.grid={gridElement:[]};
-    this.gridService.getGrid().subscribe(grid => this.grid=grid);
+  constructor(private router: Router, private gameService: GameService, private http:HttpClient) {
+    this.selectedDifficulty=Level.EASY;
+    this.grids=new Map();
+    this.current_grid={gridElements:Array.from({length: 9}, () => Array.from({length: 9})),
+      constant:Array.from({length: 9}, () => Array.from({length: 9})),
+      scores:[]};
    }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.gameService.getGrids().then(grids=>{
+      this.grids.set(Level.EASY, grids[0]);
+      this.grids.set(Level.MEDIUM, grids[1]);
+      this.grids.set(Level.HARD, grids[2]);
+      this.grids.set(Level.VERY_HARD, grids[3]);
+      this.grids.set(Level.INSANE, grids[4]);
+      this.grids.set(Level.INHUMAN, grids[5]);
+      this.changeDifficulty();
+    })
+  }
 
   // user's desired name
   user_name : string = ""
@@ -26,23 +46,36 @@ export class MainMenuComponentComponent implements OnInit {
     this.user_name = s;
   }
 
-  // use suggestions or no
-  with_suggestions : boolean = false;
+  changeDifficulty(){
+    this.current_grid = this.grids.get(this.selectedDifficulty)!;
+  }
 
-  selectedDifficulty : "easy" | "medium" | "hard" | "very hard" = "easy";
-  difficulties : string[] = ["easy", "medium", "hard", "very hard"];
-
-
+  async generatedNewGrid(){
+    const gridElements: number[][]=[];
+    let url="sudoku-provider/"+this.selectedDifficulty;
+    await lastValueFrom(this.http.get(url,{ responseType: 'text'})).then(
+      text=>{
+        let gridString=text.split('');
+        for(let i:number=0; i<9;i++){
+          gridElements[i]=[];
+          for(let j:number=0; j<9;j++){
+            gridElements[i][j]=Number(gridString[j + i * 9]);
+          }
+        }
+      }
+    )
+    this.current_grid = new Grid(gridElements);
+    console.log(this.current_grid);
+  }
 
   goToGamePage() : void{
-    console.log("TODO implement link");
-    console.log("user_name : " + this.user_name);
-    this.gameService.setPlayerName(this.user_name);
-    console.log("with_suggestions : " + this.with_suggestions);
-    if(this.with_suggestions){
-      this.gameService.enableSuggestion();
+    let player_name=this.user_name;
+    if(player_name.trim()==""){
+      player_name="foo";  // random name
     }
-    console.log("selectedDifficulty : " + this.selectedDifficulty);
-    this.router.navigate(["/game"]);
+    this.gameService.startGame(player_name, this.with_suggestions, this.current_grid, this.selectedDifficulty);
+    this.router.navigate(["/game"]).then(()=>{
+      console.log("next page");
+    });
   }
 }

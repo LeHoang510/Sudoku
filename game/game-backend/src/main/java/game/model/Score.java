@@ -7,22 +7,16 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
 @ToString
-public class Score {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int rank;
+public class Score implements Comparable<Score> {
     private String name;
     private int score;
+    @Override
+    public int compareTo(final Score score) {
+        return score.score - this.score;
+    }
 }
