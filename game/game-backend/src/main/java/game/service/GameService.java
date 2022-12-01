@@ -23,12 +23,20 @@ public class GameService {
     private ObjectWriter writer = mapper.writer(new DefaultPrettyPrinter());
 
     public File getGridFile(final String level) {
-        final String source = "src/main/resources/data/grid/" + level + ".json";
-        return Paths.get(source).toFile();
+        try {
+            return Paths.get(getClass().getClassLoader().getResource("data/grid/" + level + ".json").toURI()).toFile();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
     public File getLeaderboardFile(final String level) {
-        final String source = "src/main/resources/data/leaderboard/" + level + ".json";
-        return Paths.get(source).toFile();
+        try {
+            return Paths.get(getClass().getClassLoader().getResource("data/leaderboard/" + level + ".json").toURI()).toFile();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return null;
+        }
     }
 
     public List<Grid> getGrids() {
