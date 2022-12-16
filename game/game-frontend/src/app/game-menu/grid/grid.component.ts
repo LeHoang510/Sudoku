@@ -1,14 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {Grid} from "../../model/grid";
 import {GameService} from "../../service/game.service";
 import {GridService} from "../../service/grid.service";
+import {PartialMatSelectBinder} from "interacto-angular";
+import {SetValue} from "../../command/SetValue";
+//import {PartialPointBinder} from "interacto";
 
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css']
 })
-export class GridComponent implements OnInit {
+export class GridComponent implements OnInit, AfterViewInit {
   grid: Grid;
   suggestion_mode: boolean;
   errors: boolean[][];
@@ -30,23 +33,32 @@ export class GridComponent implements OnInit {
     });
     this.gridService.getErrors().subscribe(errors => this.errors=errors);
     this.gridService.getSuggestions().subscribe(suggestions => this.suggestions=suggestions);
-    // if or without if is okay but if dont have if, a glitch will happen =)))
+    // 'if' or without 'if' is okay but if we don't use 'if', a glitch will happen =)))
     if(this.grid.gridElements[0][0]!=undefined){
       // need for refresh page
       this.gridService.verification(this.grid);
     }
   }
+  ngAfterViewInit(): void{
+    /*
+    this.bindings.comboBoxBinder()
+      .on(this.divs.toArray())
+      .toProduce(i => new SetValue(this.gameService,x,y,i.change?.value))
+      .bind();
 
-  selectTileValue(x:number,y:number,val:number):void{
-    this.gameService.setTile(x,y,val);
-    this.gridService.verification(this.gameService.grid);
-    this.gridService.generateSuggestion(this.gameService.grid);
-    this.gameService.checkEndGame();
+     */
   }
-  setTileValueRightClick(event:Event,x:number,y:number){
-    event.preventDefault();
+
+
+  public setValue(x:number,y:number,binder: PartialMatSelectBinder) {
+    binder.toProduce(i => new SetValue(this.gameService,x,y,i.change?.value)).bind();
+  }
+  /*
+  public directSet(x:number,y:number,binder: PartialPointBinder) {
     if(this.gameService.with_suggestion || this.suggestions[x][y].length==1){
-      this.selectTileValue(x,y,this.suggestions[x][y][0]);
+      binder.toProduce(i => new SetValue(this.gameService,x,y,this.suggestions[x][y][0])).bind();
     }
   }
+
+   */
 }

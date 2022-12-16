@@ -44,6 +44,7 @@ export class GameMenuComponent implements OnInit {
       element.style.display = 'block';
     }
   }
+
 }
 
 

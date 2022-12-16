@@ -77,12 +77,19 @@ export class GameService {
   }
   setTile(x:number,y:number,value:number){
     this.addCoups();
+    this.setValue(x,y,value);
+  }
+  setValue(x:number,y:number,value:number){
     if(value==undefined){
       this.grid.gridElements[x][y]=0;
     }else {
       this.grid.gridElements[x][y]=value;
     }
     this.gridBehavior.next(this.grid);
+
+    this.gridService.verification(this.grid);
+    this.gridService.generateSuggestion(this.grid);
+    this.checkEndGame();
   }
   addCoups():void{
     this.coups=this.coups+1;
