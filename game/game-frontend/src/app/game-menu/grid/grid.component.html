@@ -9,12 +9,14 @@
             <mat-select [value]="grid.gridElements[x][y]" class="tile-select"
                         [ngClass]="errors[x][y] ? 'tile-error' : ''"
                         [ioMatSelect] (matSelectBinder)="setValue(x,y,$event)"
+                        [ioClick] (clickBinder)="directSet(x,y,$event)"
                         (contextmenu)="$event.preventDefault()">
-                        <!--
+              <!--
                         (selectionChange)="selectTileValue(x,y,$event.value)"
                         (contextmenu)="setTileValueRightClick(x,y,$event)">
                         [ioClick] (clickBinder)="directSet(x,y,$event)"
                         -->
+
               <mat-option style="font-size: 15px">-</mat-option>
               <mat-option style="font-size: 15px" *ngFor="let z of [1,2,3,4,5,6,7,8,9]" [value]="z">{{z}}</mat-option>
             </mat-select>

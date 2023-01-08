@@ -4,7 +4,7 @@
 
 - en tant que joueur je veux pouvoir générer des sudokus pour toujours en avoir (ou choisir un sudoku déjà généré pour essayer d'avoir une meilleur score que les autres qui y ont joués)
 
-- en tant que joueur je veux pouvoir rentrer des chiffres avec le souris ou le clavier pour être plus confortable
+- en tant que joueur je veux pouvoir rentrer des chiffres avec le souris ou le clic droit pour être plus confortable
 
 - en tant que joueur je veux pouvoir visualiser sur un arbre mes actions, annoté en couleur si j'ai fait un choix, perdu, etc... pour pouvoir mieux voir le structure du jeu
 
