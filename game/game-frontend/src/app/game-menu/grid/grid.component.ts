@@ -1,17 +1,17 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Grid} from "../../model/grid";
 import {GameService} from "../../service/game.service";
 import {GridService} from "../../service/grid.service";
 import {PartialMatSelectBinder} from "interacto-angular";
 import {SetValue} from "../../command/SetValue";
-//import {PartialPointBinder} from "interacto";
+import {PartialPointBinder} from "interacto";
 
 @Component({
   selector: 'app-grid',
   templateUrl: './grid.component.html',
   styleUrls: ['./grid.component.css']
 })
-export class GridComponent implements OnInit, AfterViewInit {
+export class GridComponent implements OnInit{
   grid: Grid;
   suggestion_mode: boolean;
   errors: boolean[][];
@@ -39,26 +39,15 @@ export class GridComponent implements OnInit, AfterViewInit {
       this.gridService.verification(this.grid);
     }
   }
-  ngAfterViewInit(): void{
-    /*
-    this.bindings.comboBoxBinder()
-      .on(this.divs.toArray())
-      .toProduce(i => new SetValue(this.gameService,x,y,i.change?.value))
-      .bind();
-
-     */
-  }
-
 
   public setValue(x:number,y:number,binder: PartialMatSelectBinder) {
-    binder.toProduce(i => new SetValue(this.gameService,x,y,i.change?.value)).bind();
+    binder.toProduce(i => new SetValue(this.gameService,this.gridService,x,y,i.change?.value)).bind();
   }
-  /*
   public directSet(x:number,y:number,binder: PartialPointBinder) {
-    if(this.gameService.with_suggestion || this.suggestions[x][y].length==1){
-      binder.toProduce(i => new SetValue(this.gameService,x,y,this.suggestions[x][y][0])).bind();
-    }
-  }
 
-   */
+    binder
+      .toProduce(i => new SetValue(this.gameService,this.gridService,x,y,this.suggestions[x][y][0]))
+      .when(i => i.button === 2 && (this.suggestions[x][y].length==1 || this.gameService.with_suggestion))
+      .bind();
+  }
 }

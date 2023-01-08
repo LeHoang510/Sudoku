@@ -1,7 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {GameService} from "../service/game.service";
 import {MatDialog} from "@angular/material/dialog";
 import {LeaderboardComponent} from "./leaderboard/leaderboard.component";
+import {TreeUndoHistory} from "interacto";
+import {SetValue} from "../command/SetValue";
+import {GridService} from "../service/grid.service";
 
 
 @Component({
@@ -9,16 +12,25 @@ import {LeaderboardComponent} from "./leaderboard/leaderboard.component";
   templateUrl: './game-menu.component.html',
   styleUrls: ['./game-menu.component.css']
 })
-export class GameMenuComponent implements OnInit {
+export class GameMenuComponent implements OnInit, AfterViewInit {
   coups: number ;
   player_name: String;
+  @ViewChild('h')
+  h: ElementRef<HTMLElement>= {} as ElementRef;
+  historyWidth: string="";
 
-  constructor(private gameService: GameService, public dialog: MatDialog) {
+  @HostListener('window:resize',['event'])
+  onResize(){
+    this.historyWidth=`${this.h.nativeElement.clientWidth}px`;
+  }
+
+  constructor(public gameService: GameService, public gridService:GridService, public dialog: MatDialog, private hist:TreeUndoHistory) {
     this.coups=0;
     this.player_name="";
   }
 
   ngOnInit(): void {
+    this.hist.clear();
     this.gameService.getCoups().subscribe(coups=>{
       this.coups=coups;
     });
@@ -26,6 +38,9 @@ export class GameMenuComponent implements OnInit {
       this.player_name=name;
     });
     this.gameService.endGameEvent.subscribe(() => this.openEndgame());
+  }
+  ngAfterViewInit() {
+    this.historyWidth=`${this.h.nativeElement.clientWidth}px`;
   }
 
   setPlayerName(event: Event): void{
@@ -45,6 +60,9 @@ export class GameMenuComponent implements OnInit {
     }
   }
 
+  rootRenderer() {
+    return SetValue.getSnapshot(this.gameService,this.gridService,0,0)
+  }
 }
 
 

@@ -2,11 +2,16 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm">
-        <io-tree-history style="height: 80%">
-        </io-tree-history>
+        <div #h>
+          <io-tree-history #treecomp [svgIconSize]="200" style="height: 80%" [style.width]="historyWidth" [rootRenderer]="rootRenderer()">
+          </io-tree-history>
+        </div>
       </div>
       <div class="col-sm">
         <app-grid></app-grid>
+        <br>
+        <h5 *ngIf="!gameService.with_suggestion">Note: You can only use right click when there is only one possible value</h5>
+        <h5 *ngIf="gameService.with_suggestion">Note: You can use right click to set the first value in the suggestions</h5>
       </div>
       <div class="col-sm">
         <div id="side-info">
