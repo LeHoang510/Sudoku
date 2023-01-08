@@ -3,7 +3,6 @@ import {GameService} from "../service/game.service";
 import {MatDialog} from "@angular/material/dialog";
 import {LeaderboardComponent} from "./leaderboard/leaderboard.component";
 import {TreeUndoHistory} from "interacto";
-import {SetValue} from "../command/SetValue";
 import {GridService} from "../service/grid.service";
 
 
@@ -41,6 +40,7 @@ export class GameMenuComponent implements OnInit, AfterViewInit {
   }
   ngAfterViewInit() {
     this.historyWidth=`${this.h.nativeElement.clientWidth}px`;
+    this.hist.clear();
   }
 
   setPlayerName(event: Event): void{
@@ -58,10 +58,6 @@ export class GameMenuComponent implements OnInit, AfterViewInit {
     if (element != null) {
       element.style.display = 'block';
     }
-  }
-
-  rootRenderer() {
-    return SetValue.getSnapshot(this.gameService,this.gridService,0,0)
   }
 }
 
