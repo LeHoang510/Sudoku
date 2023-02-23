@@ -17,7 +17,7 @@ th{
 }
 
 /* Turn off arrow */
-/deep/ .mat-select-arrow {
+::ng-deep .mat-select-arrow {
   display: none;
 }
 /* box */
@@ -50,7 +50,7 @@ mat-option{
 .tile-error {
   background: lightcoral;
 }
-.mat-select /deep/ .mat-select-trigger{
+.mat-select ::ng-deep .mat-select-trigger{
   height: 100%;
 }
 .disable{
