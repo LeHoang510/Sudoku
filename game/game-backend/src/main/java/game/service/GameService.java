@@ -49,6 +49,7 @@ public class GameService {
             final Grid insane = mapper.readValue(getGridFile("insane"), Grid.class);
             final Grid inhuman = mapper.readValue(getGridFile("inhuman"), Grid.class);
             grids.add(easy);
+
             grids.add(medium);
             grids.add(hard);
             grids.add(veryhard);
